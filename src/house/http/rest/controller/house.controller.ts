@@ -32,6 +32,12 @@ export class HouseController {
     return new SimpleHouse(house);
   }
 
+  @Get("/company/:companyId")
+  async findByCompanyId(@Param("companyId") companyId: string) {
+    const houses = await this.houseService.findByCompanyId(companyId);
+    return houses.map((house) => new SimpleHouse(house));
+  }
+
   @Post()
   @UseGuards(ManagerOrAdminGuard)
   async create(@Body() createHouseDto: CreateHouseDto) {

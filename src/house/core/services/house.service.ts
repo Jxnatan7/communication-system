@@ -26,6 +26,11 @@ export class HouseService {
     return this.houseModel.find().exec();
   }
 
+  async findByCompanyId(companyId: string): Promise<House[]> {
+    await this.ensureCompanyExists(companyId);
+    return this.houseModel.find({ companyId }).exec();
+  }
+
   async findById(id: string): Promise<House> {
     return this.findHouseOrFail(id);
   }
