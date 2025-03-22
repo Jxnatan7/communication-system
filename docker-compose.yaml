@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  communication-mongo:
+    image: mongo:latest
+    container_name: communication-mongo
+    hostname: communication-mongo
+    restart: unless-stopped
+    environment:
+      - "MONGO_INITDB_ROOT_USERNAME=admin"
+      - "MONGO_INITDB_ROOT_PASSWORD=admin"
+    healthcheck:
+      test: echo 'db.stats().ok' | mongo localhost:27017/communication-system --quiet
+      start_period: 10s
+    volumes:
+      - ./data/mongo:/data/db
+      - ./docker/mongo/init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh:ro
+    ports:
+      - "27017:27017"
+    networks:
+      - communication-network
+
+networks:
+  communication-network:
+    driver: bridge
