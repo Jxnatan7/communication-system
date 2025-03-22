@@ -1,11 +1,15 @@
-import { Module } from '@nestjs/common';
+import { Module } from "@nestjs/common";
+import { MongooseModule } from "@nestjs/mongoose";
+import { HouseSchema } from "./core/schemas/house.schema";
+import { HouseController } from "./http/rest/controller/house.controller";
+import { HouseService } from "./core/services/house.service";
 
 @Module({
-  imports: [],
-  // controllers: [HousesController],
-  // providers: [
-  //   HousesService,
-  //   ...houseProviders,
-  // ],
+  imports: [
+    MongooseModule.forFeature([{ name: "House", schema: HouseSchema }]),
+  ],
+  controllers: [HouseController],
+  providers: [HouseService],
+  exports: [HouseService],
 })
-export class HousesModule {}
+export class HouseModule {}
