@@ -10,6 +10,7 @@ import { LocalStrategy } from "./strategies/local.strategy";
 import { JwtStrategy } from "./strategies/jwt.strategy";
 import { UserSchema } from "src/user/core/schemas/user.schema";
 import { UserService } from "src/user/core/services/user.service";
+import { HouseModule } from "src/house/house.module";
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { UserService } from "src/user/core/services/user.service";
       secret: process.env.JWT_SECRET_KEY,
       signOptions: { expiresIn: "7d" },
     }),
+    HouseModule,
   ],
   controllers: [AuthController],
   providers: [UserService, AuthService, LocalStrategy, JwtStrategy],
