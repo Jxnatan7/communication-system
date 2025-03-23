@@ -25,7 +25,21 @@ export class CommunicationRequestService {
       userSaved,
     );
 
-    return CommunicationRequestDto.create(updatedRequest, userSaved.role);
+    return CommunicationRequestDto.create(updatedRequest);
+  }
+
+  async selectHouse(
+    id: string,
+    houseId: string,
+  ): Promise<CommunicationRequestDto> {
+    const communicationRequest = await this.communicationRequestModel
+      .findByIdAndUpdate(id, { $set: { houseId } }, { new: true })
+      .exec();
+
+    if (!communicationRequest) {
+      throw new Error("Communication request not found");
+    }
+    return CommunicationRequestDto.create(communicationRequest);
   }
 
   private async saveCommunicationRequest(

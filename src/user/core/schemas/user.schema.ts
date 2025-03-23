@@ -15,7 +15,7 @@ export class User extends Document {
   @Prop({ required: true })
   name: string;
 
-  @Prop({ unique: true })
+  @Prop()
   email: string;
 
   @Prop()
@@ -41,6 +41,14 @@ export class User extends Document {
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
+
+UserSchema.index(
+  { email: 1 },
+  {
+    unique: true,
+    partialFilterExpression: { email: { $exists: true, $ne: null } },
+  },
+);
 
 const SALT_ROUNDS = 10;
 

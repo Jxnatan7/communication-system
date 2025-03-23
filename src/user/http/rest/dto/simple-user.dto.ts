@@ -1,14 +1,16 @@
 import { User } from "src/user/core/schemas/user.schema";
 
 export class SimpleUser {
-  private readonly _id: string;
-  private readonly _name: string;
-  private readonly _email: string;
+  private readonly id: string;
+  private readonly name: string;
+  private readonly email: string;
+  private readonly token: string;
 
-  private constructor(id: string, name: string, email: string) {
-    this._id = id;
-    this._name = name;
-    this._email = email;
+  private constructor(id: string, name: string, email: string, token: string) {
+    this.id = id;
+    this.name = name;
+    this.email = email;
+    this.token = token;
   }
 
   public static createFromUser(user: User): SimpleUser {
@@ -16,18 +18,6 @@ export class SimpleUser {
       throw new Error("Dados do usuário inválidos para criação de SimpleUser.");
     }
 
-    return new SimpleUser(String(user.id), user.name, user.email);
-  }
-
-  public get id(): string {
-    return this._id;
-  }
-
-  public get name(): string {
-    return this._name;
-  }
-
-  public get email(): string {
-    return this._email;
+    return new SimpleUser(String(user.id), user.name, user.email, user.token);
   }
 }
