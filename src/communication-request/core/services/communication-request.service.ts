@@ -5,6 +5,7 @@ import { Model, Types } from "mongoose";
 import { User, UserRole } from "src/user/core/schemas/user.schema";
 import { CreateCommunicationRequestDto } from "src/communication-request/http/rest/dto/create-communication-request.dto";
 import { CommunicationRequestDto } from "src/communication-request/http/rest/dto/communication-request.dto";
+import { ValidateCommunicationRequestDto } from "src/communication-request/http/rest/dto/validation-communication-request.dto";
 
 @Injectable()
 export class CommunicationRequestService {
@@ -34,6 +35,34 @@ export class CommunicationRequestService {
   ): Promise<CommunicationRequestDto> {
     const communicationRequest = await this.communicationRequestModel
       .findByIdAndUpdate(id, { $set: { houseId } }, { new: true })
+      .exec();
+
+    if (!communicationRequest) {
+      throw new Error("Communication request not found");
+    }
+    return CommunicationRequestDto.create(communicationRequest);
+  }
+
+  async listByHouseId(houseId: string): Promise<CommunicationRequestDto[]> {
+    const communicationRequests = await this.communicationRequestModel
+      .find({ houseId })
+      .exec();
+
+    return communicationRequests.map((request) =>
+      CommunicationRequestDto.create(request),
+    );
+  }
+
+  async validate(
+    id: string,
+    validateCommunicationRequestDto: ValidateCommunicationRequestDto,
+  ) {
+    const communicationRequest = await this.communicationRequestModel
+      .findByIdAndUpdate(
+        id,
+        { $set: { status: validateCommunicationRequestDto.status } },
+        { new: true },
+      )
       .exec();
 
     if (!communicationRequest) {

@@ -3,7 +3,7 @@ import { Document, Types } from "mongoose";
 
 export enum CommunicationStatus {
   PENDING = "PENDING",
-  ACCEPTED = "ACCEPT",
+  ACCEPTED = "ACCEPTED",
   DENIED = "DENIED",
   FINALIZED = "FINALIZED",
 }
