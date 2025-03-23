@@ -1,11 +1,16 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { CommunicationRequest } from "../schemas/communication-request.schema";
+import {
+  CommunicationRequest,
+  CommunicationStatus,
+} from "../schemas/communication-request.schema";
 import { Model, Types } from "mongoose";
 import { User, UserRole } from "src/user/core/schemas/user.schema";
 import { CreateCommunicationRequestDto } from "src/communication-request/http/rest/dto/create-communication-request.dto";
 import { CommunicationRequestDto } from "src/communication-request/http/rest/dto/communication-request.dto";
 import { ValidateCommunicationRequestDto } from "src/communication-request/http/rest/dto/validation-communication-request.dto";
+import { ChatService } from "src/chat/core/services/chat.service";
+import { House } from "src/house/core/schemas/house.schema";
 
 @Injectable()
 export class CommunicationRequestService {
@@ -13,6 +18,8 @@ export class CommunicationRequestService {
     @InjectModel(CommunicationRequest.name)
     private readonly communicationRequestModel: Model<CommunicationRequest>,
     @InjectModel(User.name) private readonly userModel: Model<User>,
+    @InjectModel(House.name) private readonly houseModel: Model<House>,
+    readonly chatService: ChatService,
   ) {}
 
   // TODO: Fazer com que todo o método seja executado dentro de uma transaçãos
@@ -68,6 +75,29 @@ export class CommunicationRequestService {
     if (!communicationRequest) {
       throw new Error("Communication request not found");
     }
+
+    if (communicationRequest.status === CommunicationStatus.ACCEPTED) {
+      const house = await this.houseModel.findById(
+        communicationRequest.houseId,
+      );
+
+      if (!house) {
+        throw new Error("House not found");
+      }
+
+      if (house.residents.length === 0) {
+        throw new Error("House has no residents");
+      }
+
+      const residentUserId = house.residents[0].toString();
+
+      const participants = [residentUserId, communicationRequest.visitorId];
+      await this.chatService.createChat(
+        String(communicationRequest.id),
+        participants,
+      );
+    }
+
     return CommunicationRequestDto.create(communicationRequest);
   }
 

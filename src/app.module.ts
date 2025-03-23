@@ -6,6 +6,7 @@ import { UserModule } from "./user/user.module";
 import { CompanyModule } from "./company/company.module";
 import { HouseModule } from "./house/house.module";
 import { CommunicationRequestModule } from "./communication-request/communication-request.module";
+import { ChatModule } from "./chat/chat.module";
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { CommunicationRequestModule } from "./communication-request/communicatio
     CompanyModule,
     HouseModule,
     CommunicationRequestModule,
+    ChatModule,
   ],
   controllers: [],
   providers: [],
