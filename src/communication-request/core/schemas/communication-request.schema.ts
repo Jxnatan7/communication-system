@@ -17,6 +17,9 @@ export class CommunicationRequest extends Document {
   visitorId: string;
 
   @Prop()
+  visitorToken: string;
+
+  @Prop()
   visitorContact: string;
 
   @Prop({ required: true })

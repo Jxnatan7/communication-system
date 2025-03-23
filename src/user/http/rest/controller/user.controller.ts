@@ -12,6 +12,6 @@ export class UserController {
   @Post()
   async create(@Body() createUserRequest: CreateUserDto) {
     const user = await this.userService.create(createUserRequest);
-    return new SimpleUser(user);
+    return SimpleUser.createFromUser(user);
   }
 }

@@ -4,6 +4,7 @@ import { CommunicationRequest } from "../schemas/communication-request.schema";
 import { Model, Types } from "mongoose";
 import { User, UserRole } from "src/user/core/schemas/user.schema";
 import { CreateCommunicationRequestDto } from "src/communication-request/http/rest/dto/create-communication-request.dto";
+import { CommunicationRequestDto } from "src/communication-request/http/rest/dto/communication-request.dto";
 
 @Injectable()
 export class CommunicationRequestService {
@@ -13,16 +14,18 @@ export class CommunicationRequestService {
     @InjectModel(User.name) private readonly userModel: Model<User>,
   ) {}
 
+  // TODO: Fazer com que todo o método seja executado dentro de uma transaçãos
   async create(
     requestData: CreateCommunicationRequestDto,
-  ): Promise<CommunicationRequest> {
+  ): Promise<CommunicationRequestDto> {
     const savedRequest = await this.saveCommunicationRequest(requestData);
     const userSaved = await this.attachRequestToUser(savedRequest);
     const updatedRequest = await this.attachUserToRequest(
       savedRequest.id as string,
       userSaved,
     );
-    return updatedRequest;
+
+    return CommunicationRequestDto.create(updatedRequest, userSaved.role);
   }
 
   private async saveCommunicationRequest(
@@ -51,7 +54,11 @@ export class CommunicationRequestService {
     user: User,
   ): Promise<CommunicationRequest> {
     const updatedCommunicationRequest = await this.communicationRequestModel
-      .findByIdAndUpdate(id, { $set: { visitorId: user.id } }, { new: true })
+      .findByIdAndUpdate(
+        id,
+        { $set: { visitorId: user.id, visitorToken: user.token } },
+        { new: true },
+      )
       .exec();
 
     if (!updatedCommunicationRequest) {

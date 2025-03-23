@@ -7,9 +7,11 @@ import { HouseModule } from "../house/house.module";
 import { CompanyModule } from "../company/company.module";
 import { HouseSchema } from "src/house/core/schemas/house.schema";
 import { CompanySchema } from "src/company/core/schemas/company.schema";
+import { ConfigModule } from "@nestjs/config";
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     MongooseModule.forFeature([{ name: "User", schema: UserSchema }]),
     MongooseModule.forFeature([{ name: "House", schema: HouseSchema }]),
     MongooseModule.forFeature([{ name: "Company", schema: CompanySchema }]),

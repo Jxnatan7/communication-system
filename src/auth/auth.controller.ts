@@ -33,6 +33,6 @@ export class AuthController {
     @Body() createUserRequest: CreateUserDto,
   ): Promise<SimpleUser> {
     const user = await this.userService.create(createUserRequest);
-    return new SimpleUser(user);
+    return SimpleUser.createFromUser(user);
   }
 }

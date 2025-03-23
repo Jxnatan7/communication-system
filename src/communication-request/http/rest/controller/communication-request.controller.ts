@@ -1,7 +1,7 @@
 import { Controller, Post, Body } from "@nestjs/common";
-import { CommunicationRequest } from "src/communication-request/core/schemas/communication-request.schema";
 import { CommunicationRequestService } from "src/communication-request/core/services/communication-request.service";
 import { CreateCommunicationRequestDto } from "src/communication-request/http/rest/dto/create-communication-request.dto";
+import { CommunicationRequestDto } from "../dto/communication-request.dto";
 
 @Controller("api/communication-requests")
 export class CommunicationRequestController {
@@ -12,7 +12,7 @@ export class CommunicationRequestController {
   @Post()
   async create(
     @Body() createCommunicationRequestDto: CreateCommunicationRequestDto,
-  ): Promise<CommunicationRequest> {
+  ): Promise<CommunicationRequestDto> {
     return this.communicationRequestService.create(
       createCommunicationRequestDto,
     );
