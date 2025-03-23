@@ -7,4 +7,5 @@ export class CreateUserDto {
   readonly role: UserRole;
   readonly houseId: string;
   readonly companyId: string;
+  readonly communicationRequestId: string;
 }

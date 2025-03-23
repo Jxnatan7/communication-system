@@ -5,6 +5,7 @@ import { AuthModule } from "src/auth/auth.module";
 import { UserModule } from "./user/user.module";
 import { CompanyModule } from "./company/company.module";
 import { HouseModule } from "./house/house.module";
+import { CommunicationRequestModule } from "./communication-request/communication-request.module";
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { HouseModule } from "./house/house.module";
     UserModule,
     CompanyModule,
     HouseModule,
+    CommunicationRequestModule,
   ],
   controllers: [],
   providers: [],

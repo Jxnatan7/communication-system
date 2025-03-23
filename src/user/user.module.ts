@@ -18,5 +18,6 @@ import { CompanySchema } from "src/company/core/schemas/company.schema";
   ],
   controllers: [UserController],
   providers: [UserService],
+  exports: [UserService, MongooseModule],
 })
 export class UserModule {}

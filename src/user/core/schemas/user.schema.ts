@@ -6,6 +6,7 @@ export enum UserRole {
   ADMIN = "ADMIN",
   RESIDENT = "RESIDENT",
   MANAGER = "MANAGER",
+  VISITOR = "VISITOR",
 }
 
 @Schema({ timestamps: true })
@@ -13,10 +14,13 @@ export class User extends Document {
   @Prop({ required: true })
   name: string;
 
-  @Prop({ required: true, unique: true })
+  @Prop({ unique: true })
   email: string;
 
-  @Prop({ required: true })
+  @Prop()
+  phone: string;
+
+  @Prop()
   password: string;
 
   @Prop({ required: true, enum: UserRole })
@@ -27,6 +31,9 @@ export class User extends Document {
 
   @Prop({ type: Types.ObjectId, ref: "Company" })
   companyId: Types.ObjectId;
+
+  @Prop({ type: Types.ObjectId, ref: "CommunicationRequest" })
+  communicationRequestId: Types.ObjectId;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
