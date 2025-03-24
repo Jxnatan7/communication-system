@@ -16,20 +16,29 @@ import { SimpleCompany } from "../dto/simple-company.dto";
 import { AdminGuard } from "src/auth/guards/admin.guard";
 
 @Controller("api/companies")
-@UseGuards(AuthGuard("jwt"))
 export class CompanyController {
   constructor(private readonly companyService: CompanyService) {}
 
   @Get()
+  @UseGuards(AdminGuard)
   async findAll() {
     const companies = await this.companyService.findAll();
     return companies.map((company) => new SimpleCompany(company));
   }
 
   @Get(":id")
+  @UseGuards(AuthGuard("jwt"))
   async findById(@Param("id") id: string) {
     const company = await this.companyService.findById(id);
     return new SimpleCompany(company);
+  }
+
+  @Get("validate/:id")
+  async validate(@Param("id") id: string) {
+    const company = await this.companyService.findById(id);
+    if (company) {
+      return true;
+    }
   }
 
   @Post()
