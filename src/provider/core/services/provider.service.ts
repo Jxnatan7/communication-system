@@ -20,6 +20,14 @@ export class ProviderService {
     return this.providerModel.find().exec();
   }
 
+  async findByCode(code: string): Promise<Provider> {
+    const provider = await this.providerModel.findOne({ code }).exec();
+    if (!provider) {
+      throw new NotFoundException("Provider not found");
+    }
+    return provider;
+  }
+
   async findById(id: string): Promise<Provider> {
     const provider = await this.providerModel.findById(id).exec();
     if (!provider) {

@@ -5,5 +5,6 @@ export class CreateCommunicationRequestDto {
   readonly visitorContact: string;
   readonly initialMessage: string;
   readonly providerId: string;
+  readonly houseId: string;
   readonly status: CommunicationStatus;
 }

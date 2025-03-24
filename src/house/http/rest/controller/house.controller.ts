@@ -16,17 +16,18 @@ import { SimpleHouse } from "../dto/simple-house.dto";
 import { ManagerOrAdminGuard } from "src/auth/guards/manager-or-admin.guard";
 
 @Controller("api/houses")
-@UseGuards(AuthGuard("jwt"))
 export class HouseController {
   constructor(private readonly houseService: HouseService) {}
 
   @Get()
+  @UseGuards(AuthGuard("jwt"))
   async findAll() {
     const houses = await this.houseService.findAll();
     return houses.map((house) => new SimpleHouse(house));
   }
 
   @Get(":id")
+  @UseGuards(AuthGuard("jwt"))
   async findById(@Param("id") id: string) {
     const house = await this.houseService.findById(id);
     return new SimpleHouse(house);
@@ -39,14 +40,14 @@ export class HouseController {
   }
 
   @Post()
-  @UseGuards(ManagerOrAdminGuard)
+  @UseGuards(AuthGuard("jwt"), ManagerOrAdminGuard)
   async create(@Body() createHouseDto: CreateHouseDto) {
     const house = await this.houseService.create(createHouseDto);
     return new SimpleHouse(house);
   }
 
   @Patch(":id")
-  @UseGuards(ManagerOrAdminGuard)
+  @UseGuards(AuthGuard("jwt"), ManagerOrAdminGuard)
   async update(
     @Param("id") id: string,
     @Body() updateHouseDto: UpdateHouseDto,
@@ -56,7 +57,7 @@ export class HouseController {
   }
 
   @Delete(":id")
-  @UseGuards(ManagerOrAdminGuard)
+  @UseGuards(AuthGuard("jwt"), ManagerOrAdminGuard)
   async delete(@Param("id") id: string) {
     await this.houseService.delete(id);
     return { message: "House deleted successfully" };

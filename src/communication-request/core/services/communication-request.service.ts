@@ -36,20 +36,6 @@ export class CommunicationRequestService {
     return CommunicationRequestDto.create(updatedRequest);
   }
 
-  async selectHouse(
-    id: string,
-    houseId: string,
-  ): Promise<CommunicationRequestDto> {
-    const communicationRequest = await this.communicationRequestModel
-      .findByIdAndUpdate(id, { $set: { houseId } }, { new: true })
-      .exec();
-
-    if (!communicationRequest) {
-      throw new Error("Communication request not found");
-    }
-    return CommunicationRequestDto.create(communicationRequest);
-  }
-
   async listByHouseId(houseId: string): Promise<CommunicationRequestDto[]> {
     const communicationRequests = await this.communicationRequestModel
       .find({ houseId })

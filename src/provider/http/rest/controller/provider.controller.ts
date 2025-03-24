@@ -20,7 +20,7 @@ export class ProviderController {
   constructor(private readonly providerService: ProviderService) {}
 
   @Get()
-  @UseGuards(AdminGuard)
+  @UseGuards(AuthGuard("jwt"), AdminGuard)
   async findAll() {
     const providers = await this.providerService.findAll();
     return providers.map((provider) => new SimpleProvider(provider));
@@ -33,23 +33,21 @@ export class ProviderController {
     return new SimpleProvider(provider);
   }
 
-  @Get("validate/:id")
-  async validate(@Param("id") id: string) {
-    const provider = await this.providerService.findById(id);
-    if (provider) {
-      return true;
-    }
+  @Get("validate/:code")
+  async validate(@Param("code") code: string) {
+    const provider = await this.providerService.findByCode(code);
+    return new SimpleProvider(provider);
   }
 
   @Post()
-  @UseGuards(AdminGuard)
+  @UseGuards(AuthGuard("jwt"), AdminGuard)
   async create(@Body() createProviderDto: CreateProviderDto) {
     const provider = await this.providerService.create(createProviderDto);
     return new SimpleProvider(provider);
   }
 
   @Patch(":id")
-  @UseGuards(AdminGuard)
+  @UseGuards(AuthGuard("jwt"), AdminGuard)
   async update(
     @Param("id") id: string,
     @Body() updateProviderDto: UpdateProviderDto,
@@ -59,7 +57,7 @@ export class ProviderController {
   }
 
   @Delete(":id")
-  @UseGuards(AdminGuard)
+  @UseGuards(AuthGuard("jwt"), AdminGuard)
   async delete(@Param("id") id: string) {
     await this.providerService.delete(id);
     return { message: "Provider deleted successfully" };

@@ -21,15 +21,6 @@ export class CommunicationRequestController {
   }
 
   @UseGuards(AuthGuard("jwt"))
-  @Post(":id/selectHouse/:houseId")
-  async selectHouse(
-    @Param("id") id: string,
-    @Param("houseId") houseId: string,
-  ): Promise<CommunicationRequestDto> {
-    return this.communicationRequestService.selectHouse(id, houseId);
-  }
-
-  @UseGuards(AuthGuard("jwt"))
   @Get(":houseId")
   async listByHouseId(
     @Param("houseId") houseId: string,

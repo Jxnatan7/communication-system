@@ -4,7 +4,7 @@ import {
   ForbiddenException,
   Injectable,
 } from "@nestjs/common";
-import { User } from "src/user/core/schemas/user.schema";
+import { User, UserRole } from "src/user/core/schemas/user.schema";
 
 @Injectable()
 export class AdminGuard implements CanActivate {
@@ -12,7 +12,7 @@ export class AdminGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const user: User = request.user;
 
-    if (!user || user.role !== "ADMIN") {
+    if (!user || user.role !== UserRole.ADMIN) {
       throw new ForbiddenException("Access denied: Admins only");
     }
 
