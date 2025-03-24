@@ -28,8 +28,8 @@ export class CommunicationRequest extends Document {
   @Prop({ type: Types.ObjectId, ref: "House" })
   houseId: Types.ObjectId;
 
-  @Prop({ type: Types.ObjectId, ref: "Company", required: true })
-  companyId: Types.ObjectId;
+  @Prop({ type: Types.ObjectId, ref: "Provider", required: true })
+  providerId: Types.ObjectId;
 
   @Prop({
     required: true,

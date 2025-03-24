@@ -4,19 +4,19 @@ import { UserSchema } from "./core/schemas/user.schema";
 import { UserController } from "./http/rest/controller/user.controller";
 import { UserService } from "./core/services/user.service";
 import { HouseModule } from "../house/house.module";
-import { CompanyModule } from "../company/company.module";
-import { HouseSchema } from "src/house/core/schemas/house.schema";
-import { CompanySchema } from "src/company/core/schemas/company.schema";
 import { ConfigModule } from "@nestjs/config";
+import { ProviderModule } from "src/provider/provider.module";
+import { HouseSchema } from "src/house/core/schemas/house.schema";
+import { ProviderSchema } from "src/provider/core/schemas/provider.schema";
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     MongooseModule.forFeature([{ name: "User", schema: UserSchema }]),
     MongooseModule.forFeature([{ name: "House", schema: HouseSchema }]),
-    MongooseModule.forFeature([{ name: "Company", schema: CompanySchema }]),
+    MongooseModule.forFeature([{ name: "Provider", schema: ProviderSchema }]),
     HouseModule,
-    CompanyModule,
+    ProviderModule,
   ],
   controllers: [UserController],
   providers: [UserService],

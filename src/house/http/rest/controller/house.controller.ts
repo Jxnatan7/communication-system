@@ -32,9 +32,9 @@ export class HouseController {
     return new SimpleHouse(house);
   }
 
-  @Get("/company/:companyId")
-  async findByCompanyId(@Param("companyId") companyId: string) {
-    const houses = await this.houseService.findByCompanyId(companyId);
+  @Get("/provider/:providerId")
+  async findByProviderId(@Param("providerId") providerId: string) {
+    const houses = await this.houseService.findByProviderId(providerId);
     return houses.map((house) => new SimpleHouse(house));
   }
 

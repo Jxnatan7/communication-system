@@ -4,20 +4,23 @@ import { Model } from "mongoose";
 import { House } from "../schemas/house.schema";
 import { UpdateHouseDto } from "src/house/http/rest/dto/update-house.dto";
 import { CreateHouseDto } from "src/house/http/rest/dto/create-house.dto";
-import { Company } from "src/company/core/schemas/company.schema";
+import { Provider } from "src/provider/core/schemas/provider.schema";
 
 @Injectable()
 export class HouseService {
   constructor(
     @InjectModel(House.name) private readonly houseModel: Model<House>,
-    @InjectModel(Company.name) private readonly companyModel: Model<Company>,
+    @InjectModel(Provider.name) private readonly providerModel: Model<Provider>,
   ) {}
 
   async create(createHouseDto: CreateHouseDto): Promise<House> {
-    await this.ensureCompanyExists(createHouseDto.companyId);
+    await this.ensureProviderExists(createHouseDto.providerId);
 
     const house = await new this.houseModel(createHouseDto).save();
-    await this.addHouseToCompany(createHouseDto.companyId, house.id as string);
+    await this.addHouseToProvider(
+      createHouseDto.providerId,
+      house.id as string,
+    );
 
     return house;
   }
@@ -26,9 +29,9 @@ export class HouseService {
     return this.houseModel.find().exec();
   }
 
-  async findByCompanyId(companyId: string): Promise<House[]> {
-    await this.ensureCompanyExists(companyId);
-    return this.houseModel.find({ companyId }).exec();
+  async findByProviderId(providerId: string): Promise<House[]> {
+    await this.ensureProviderExists(providerId);
+    return this.houseModel.find({ providerId: providerId }).exec();
   }
 
   async findById(id: string): Promise<House> {
@@ -43,19 +46,19 @@ export class HouseService {
     await this.deleteHouseOrFail(id);
   }
 
-  private async ensureCompanyExists(companyId: string): Promise<void> {
-    const companyExists = await this.companyModel.exists({ _id: companyId });
-    if (!companyExists) {
-      throw new NotFoundException("Company not found");
+  private async ensureProviderExists(providerId: string): Promise<void> {
+    const providerExists = await this.providerModel.exists({ _id: providerId });
+    if (!providerExists) {
+      throw new NotFoundException("Provider not found");
     }
   }
 
-  private async addHouseToCompany(
-    companyId: string,
+  private async addHouseToProvider(
+    providerId: string,
     houseId: string,
   ): Promise<void> {
-    await this.companyModel.findByIdAndUpdate(
-      companyId,
+    await this.providerModel.findByIdAndUpdate(
+      providerId,
       { $push: { houses: houseId } },
       { new: true },
     );

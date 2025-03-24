@@ -3,10 +3,10 @@ import { ConfigModule } from "@nestjs/config";
 import { MongooseModule } from "@nestjs/mongoose";
 import { AuthModule } from "src/auth/auth.module";
 import { UserModule } from "./user/user.module";
-import { CompanyModule } from "./company/company.module";
 import { HouseModule } from "./house/house.module";
 import { CommunicationRequestModule } from "./communication-request/communication-request.module";
 import { ChatModule } from "./chat/chat.module";
+import { ProviderModule } from "./provider/provider.module";
 
 @Module({
   imports: [
@@ -16,7 +16,7 @@ import { ChatModule } from "./chat/chat.module";
     ),
     AuthModule,
     UserModule,
-    CompanyModule,
+    ProviderModule,
     HouseModule,
     CommunicationRequestModule,
     ChatModule,

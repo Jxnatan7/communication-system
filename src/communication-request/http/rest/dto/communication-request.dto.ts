@@ -9,7 +9,7 @@ export class CommunicationRequestDto {
   private readonly visitorContact: string;
   private readonly initialMessage: string;
   private readonly houseId: string;
-  private readonly companyId: string;
+  private readonly providerId: string;
   private readonly status: CommunicationStatus;
   private readonly visitorId: string;
   private readonly visitorToken: string;
@@ -20,7 +20,7 @@ export class CommunicationRequestDto {
     visitorContact: string,
     initialMessage: string,
     houseId: string,
-    companyId: string,
+    providerId: string,
     status: CommunicationStatus,
     visitorId: string,
     visitorToken: string,
@@ -30,7 +30,7 @@ export class CommunicationRequestDto {
     this.visitorContact = visitorContact;
     this.initialMessage = initialMessage;
     this.houseId = houseId;
-    this.companyId = companyId;
+    this.providerId = providerId;
     this.status = status;
     this.visitorId = visitorId;
     this.visitorToken = visitorToken;
@@ -41,7 +41,7 @@ export class CommunicationRequestDto {
     if (
       !data.visitorName ||
       !data.initialMessage ||
-      !data.companyId ||
+      !data.providerId ||
       data.status === undefined ||
       !data.visitorId ||
       !data.visitorToken
@@ -55,7 +55,7 @@ export class CommunicationRequestDto {
       data.visitorContact,
       data.initialMessage,
       data.houseId?.toString(),
-      data.companyId?.toString(),
+      data.providerId?.toString(),
       data.status,
       data.visitorId,
       data.visitorToken,

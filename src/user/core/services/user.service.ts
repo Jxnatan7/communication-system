@@ -8,14 +8,14 @@ import { Model } from "mongoose";
 import { User, UserRole } from "../schemas/user.schema";
 import { CreateUserDto } from "src/user/http/rest/dto/create-user.dto";
 import { House } from "src/house/core/schemas/house.schema";
-import { Company } from "src/company/core/schemas/company.schema";
+import { Provider } from "src/provider/core/schemas/provider.schema";
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<User>,
     @InjectModel(House.name) private readonly houseModel: Model<House>,
-    @InjectModel(Company.name) private readonly companyModel: Model<Company>,
+    @InjectModel(Provider.name) private readonly providerModel: Model<Provider>,
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
@@ -45,7 +45,7 @@ export class UserService {
 
   private async validateUserRole(createUserDto: CreateUserDto): Promise<void> {
     if (createUserDto.role === UserRole.MANAGER) {
-      await this.ensureManagerHasCompany(createUserDto.companyId);
+      await this.ensureManagerHasProvider(createUserDto.providerId);
     }
 
     if (createUserDto.role === UserRole.RESIDENT) {
@@ -53,13 +53,13 @@ export class UserService {
     }
   }
 
-  private async ensureManagerHasCompany(companyId?: string): Promise<void> {
-    if (!companyId) {
-      throw new ConflictException("MANAGER must have a companyId");
+  private async ensureManagerHasProvider(providerId?: string): Promise<void> {
+    if (!providerId) {
+      throw new ConflictException("MANAGER must have a providerId");
     }
-    const companyExists = await this.companyModel.exists({ _id: companyId });
-    if (!companyExists) {
-      throw new NotFoundException("Company not found");
+    const providerExists = await this.providerModel.exists({ _id: providerId });
+    if (!providerExists) {
+      throw new NotFoundException("Provider not found");
     }
   }
 

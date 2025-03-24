@@ -6,6 +6,6 @@ export class CreateUserDto {
   readonly password: string;
   readonly role: UserRole;
   readonly houseId: string;
-  readonly companyId: string;
+  readonly providerId: string;
   readonly communicationRequestId: string;
 }

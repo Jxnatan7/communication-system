@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document, Types } from "mongoose";
 
 @Schema({ timestamps: true })
-export class Company extends Document {
+export class Provider extends Document {
   @Prop({ required: true })
   name: string;
 
@@ -13,4 +13,4 @@ export class Company extends Document {
   houses: Types.ObjectId[];
 }
 
-export const CompanySchema = SchemaFactory.createForClass(Company);
+export const ProviderSchema = SchemaFactory.createForClass(Provider);

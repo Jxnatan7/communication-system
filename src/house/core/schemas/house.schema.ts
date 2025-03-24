@@ -15,8 +15,8 @@ export class House extends Document {
   @Prop({ type: [{ type: Types.ObjectId, ref: "User" }] })
   residents: Types.ObjectId[];
 
-  @Prop({ type: Types.ObjectId, ref: "Company" })
-  companyId: Types.ObjectId;
+  @Prop({ type: Types.ObjectId, ref: "Provider" })
+  providerId: Types.ObjectId;
 }
 
 export const HouseSchema = SchemaFactory.createForClass(House);
