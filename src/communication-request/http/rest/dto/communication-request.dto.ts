@@ -5,6 +5,7 @@ import {
 import { UserRole } from "src/user/core/schemas/user.schema";
 
 export class CommunicationRequestDto {
+  private readonly id: string;
   private readonly visitorName: string;
   private readonly visitorContact: string;
   private readonly initialMessage: string;
@@ -16,6 +17,7 @@ export class CommunicationRequestDto {
   private readonly visitorRole: UserRole;
 
   private constructor(
+    id: string,
     visitorName: string,
     visitorContact: string,
     initialMessage: string,
@@ -26,6 +28,7 @@ export class CommunicationRequestDto {
     visitorToken: string,
     role: UserRole,
   ) {
+    this.id = id;
     this.visitorName = visitorName;
     this.visitorContact = visitorContact;
     this.initialMessage = initialMessage;
@@ -51,6 +54,7 @@ export class CommunicationRequestDto {
     }
 
     return new CommunicationRequestDto(
+      String(data.id),
       data.visitorName,
       data.visitorContact,
       data.initialMessage,

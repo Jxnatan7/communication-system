@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { compareSync } from "bcrypt";
 import { JwtService } from "@nestjs/jwt";
 import { UserService } from "src/user/core/services/user.service";
-import { User } from "src/user/core/schemas/user.schema";
+import { User, UserRole } from "src/user/core/schemas/user.schema";
 @Injectable()
 export class AuthService {
   constructor(
@@ -25,8 +25,24 @@ export class AuthService {
 
   async login(user: User) {
     const payload = { sub: user._id, email: user.email, role: user.role };
+
+    if (user.role === UserRole.RESIDENT && user.houseId) {
+      const houseId = user.houseId;
+      return {
+        token: this.jwtService.sign(payload),
+        houseId,
+        user: {
+          id: user._id,
+        },
+      };
+    }
+
     return {
+      ...user,
       token: this.jwtService.sign(payload),
+      user: {
+        id: user._id,
+      },
     };
   }
 }
